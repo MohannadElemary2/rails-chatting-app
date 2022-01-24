@@ -1,8 +1,10 @@
 class ElasticsearchRepository
-    include Elasticsearch::Persistence::Repository
+  include Elasticsearch::Persistence::Repository
 end
 
-ELASTIC_SEARCH_REPOSITORY = ElasticsearchRepository.new
+client = Elasticsearch::Client.new(url: ENV['ELASTICSEARCH_URL'], log: true)
+
+ELASTIC_SEARCH_REPOSITORY = ElasticsearchRepository.new(client: client)
 
 ELASTIC_SEARCH_REPOSITORY.settings({index: {
       analysis: {filter: {autocomplete_filter: {
