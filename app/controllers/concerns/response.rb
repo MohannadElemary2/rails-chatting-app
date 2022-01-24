@@ -1,4 +1,5 @@
 module Response
+    # Send API success resposne
     def send_success_response(message, data = [], status = :ok)
         render json: {
             message: message,
@@ -7,6 +8,7 @@ module Response
         }, status: status
     end
 
+    # Send API error resposne
     def send_error_response(message, errors = [], status = :bad_request)
         render json: {
             message: message,

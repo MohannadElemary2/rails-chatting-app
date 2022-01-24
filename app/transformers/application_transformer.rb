@@ -3,6 +3,7 @@ class ApplicationTransformer
         @data = data
     end
 
+    # Trasform (map) the response data
     def transform
         result = []
 

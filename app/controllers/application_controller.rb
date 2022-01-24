@@ -5,6 +5,7 @@ class ApplicationController < ActionController::API
         @service = ApplicationService.new
     end
 
+    # List applications
     def index
         applications = @service.index(params)
 
@@ -14,7 +15,9 @@ class ApplicationController < ActionController::API
         )
     end
 
+    # Create new application
     def create
+        # Validate inputs
         error_message = StoreApplicationRequest.new(params).validate()
         
         if error_message
@@ -22,8 +25,10 @@ class ApplicationController < ActionController::API
             return
         end
 
+        # Store application data
         application = @service.create(params)
 
+        # Return response with create application data
         send_success_response(
             'success',
             ApplicationTransformer.new(application).transform,
@@ -31,7 +36,9 @@ class ApplicationController < ActionController::API
         )
     end
 
+    # Update application
     def update
+        # Validate inputs
         error_message = UpdateApplicationRequest.new(params).validate()
         
         if error_message
@@ -39,6 +46,7 @@ class ApplicationController < ActionController::API
             return
         end
 
+        # Update application data
         @service.update(params, params[:id])
 
         send_success_response('success')

@@ -5,6 +5,7 @@ class MessageController < ActionController::API
         @service = MessageService.new
     end
 
+    # List chat messages with elasticsearch
     def index
         messages = @service.index(params)
 
@@ -14,6 +15,7 @@ class MessageController < ActionController::API
         )
     end
 
+    # Create new message
     def create
         error_message = StoreMessageRequest.new(params).validate()
         
@@ -31,6 +33,7 @@ class MessageController < ActionController::API
         )
     end
 
+    # Update message
     def update
         error_message = UpdateMessageRequest.new(params).validate()
         

@@ -1,20 +1,25 @@
 class MessageService
+  # List message using elasticsearch
   def index(params)
+    # Handle pagination
     page = params[:page] || 1
     per_page = params[:per_page] || 20
 
+    # Check that the current application is correct
     application = Application.where(token: params[:application_id]).first
 
     if !application
       return
     end
 
+    # Check that the current chat is correct
     chat = Chat.where(number: params[:chat_id]).where(application_id: application[:id]).first
 
     if !chat
       return
     end
 
+    # Prepare elasticsearch query
     elastic_obj = {
       from: (page.to_i - 1) * per_page.to_i,
       size: per_page.to_i,
@@ -26,6 +31,7 @@ class MessageService
         }
     }}
 
+    # Add search by message body if requested
     if params[:q]
       elastic_obj[:query][:bool][:must] = { match: { body: params[:q]}}
     end
@@ -35,6 +41,7 @@ class MessageService
     return messages
   end
 
+  # Create new message
   def create(data)
     application = Application.where(token: data[:application_id]).first
 
@@ -105,6 +112,7 @@ class MessageService
     ]
   end
 
+  # Update specific message
   def update(data, id)
     application = Application.where(token: data[:application_id]).first
 

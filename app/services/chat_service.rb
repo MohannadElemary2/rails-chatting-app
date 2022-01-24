@@ -1,8 +1,11 @@
 class ChatService
+  # List available chats
   def index(params, token)
+    # Handle pagination
     page = params[:page] || 1
     per_page = params[:per_page] || 20
 
+    # Check that the current application is correct
     application = Application.where(token: token).first
 
     if !application
@@ -12,6 +15,7 @@ class ChatService
     return Chat.where(application_id: application[:id]).limit(per_page.to_i).offset((page.to_i - 1) * per_page.to_i)
   end
 
+  # Create new chat
   def create(data)
     application = Application.where(token: data[:application_id]).first
 
@@ -61,20 +65,23 @@ class ChatService
     ]
   end
 
+  # Update specific chat
   def update(data, id)
+    # Check that the current application is correct
     application = Application.where(token: data[:application_id]).first
 
     if !application
       return
     end
     
+    # Check that the current chat to update is correct
     chat = Chat.where(number: id).where(application_id: application[:id]).first
 
     if !chat
       return
     end
 
-    # Check if needing to create a new jon to update in database
+    # Check if needing to create a new job to update in database
     REDIS_CLIENT.watch("application_#{application[:id]}_last_update_job_date") do
       last_job_date = REDIS_CLIENT.get("application_#{application[:id]}_last_update_job_date").to_i
       
@@ -87,7 +94,7 @@ class ChatService
       REDIS_CLIENT.unwatch
     end
 
-    # store new chat object in redis
+    # store updated chat object in redis to be persist in main database soon
     REDIS_CLIENT.watch("application_#{application[:id]}_pending_chats_to_update") do
       old_chats = REDIS_CLIENT.get("application_#{application[:id]}_pending_chats_to_update")
 

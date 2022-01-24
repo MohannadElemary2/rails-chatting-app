@@ -5,6 +5,7 @@ class ChatController < ActionController::API
         @service = ChatService.new
     end
 
+    # List chats
     def index
         error_message = ListChatsRequest.new(params).validate()
 
@@ -21,6 +22,7 @@ class ChatController < ActionController::API
         )
     end
 
+    # Create new chat
     def create
         error_message = StoreChatRequest.new(params).validate()
         
@@ -38,6 +40,7 @@ class ChatController < ActionController::API
         )
     end
 
+    # Update chat
     def update
         error_message = UpdateChatRequest.new(params).validate()
         

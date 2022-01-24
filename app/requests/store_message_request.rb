@@ -3,6 +3,7 @@ class StoreMessageRequest
       @data = data
     end
 
+    # Validate request inputs
     def validate
         if !@data[:chat_id]
             return "please select specific chat"

@@ -3,6 +3,7 @@ class StoreChatRequest
       @data = data
     end
 
+    # Validate request inputs
     def validate
         if !@data[:application_id]
             return "please select specific application"
