@@ -1,24 +1,22 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Introduction
 
-Things you may want to cover:
+This repository introduces a simple ruby on rail application for chat messaging. User is able to create new application, a new chat within a specific application, and a new messages within a chat.
 
-* Ruby version
+<br />
 
-* System dependencies
+Elasticsearch is used to retreive chat messages when requested. N-gram analyzer is used in order to give ability for partially searching in messages body.
 
-* Configuration
+<br />
 
-* Database creation
+The creation of messages and chats is not done directly to the main database. Instead, it's being queued and inserted in bulk with one query to reduce database hits.
 
-* Database initialization
+  
 
-* How to run the test suite
+## Postman Collection
 
-* Services (job queues, cache servers, search engines, etc.)
+[Click here](https://documenter.getpostman.com/view/8868758/UVXqFYiX)
 
-* Deployment instructions
-
-* ...
+## Todo
+- Cache applications and chats in redis in order to reduce database hits more.
+- Update messages in elasticsearch when it's updated in main database
